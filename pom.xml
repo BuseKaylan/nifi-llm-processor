@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.github.busekaylan</groupId>
+    <artifactId>nifi-llm-bundle</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <name>NiFi LLM Bundle</name>
+    <description>Apache NiFi processor and controller services for large language models: Anthropic Claude, OpenAI GPT and Google Gemini</description>
+    <url>https://github.com/BuseKaylan/nifi-llm-processor</url>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>BuseKaylan</id>
+            <name>Buse Kaylan</name>
+            <url>https://github.com/BuseKaylan</url>
+        </developer>
+    </developers>
+
+    <scm>
+        <url>https://github.com/BuseKaylan/nifi-llm-processor</url>
+        <connection>scm:git:https://github.com/BuseKaylan/nifi-llm-processor.git</connection>
+    </scm>
+
+    <modules>
+        <module>nifi-llm-api</module>
+        <module>nifi-llm-api-nar</module>
+        <module>nifi-llm-processors</module>
+        <module>nifi-llm-processors-nar</module>
+        <module>nifi-llm-anthropic</module>
+        <module>nifi-llm-anthropic-nar</module>
+        <module>nifi-llm-openai</module>
+        <module>nifi-llm-openai-nar</module>
+        <module>nifi-llm-gemini</module>
+        <module>nifi-llm-gemini-nar</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>21</maven.compiler.release>
+        <nifi.version>2.12.0</nifi.version>
+        <nifi-api.version>2.12.0</nifi-api.version>
+        <nifi-nar-plugin.version>2.4.0</nifi-nar-plugin.version>
+        <anthropic-java.version>2.75.0</anthropic-java.version>
+        <openai-java.version>4.87.1</openai-java.version>
+        <google-genai.version>1.78.0</google-genai.version>
+        <jackson.version>2.19.4</jackson.version>
+        <junit.version>6.1.3</junit.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- One Jackson version per NAR, so jackson-databind and jackson-annotations never mismatch -->
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- NiFi supplies SLF4J from its root class loader; bundling a copy breaks logging -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>2.0.19</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.nifi</groupId>
+                <artifactId>nifi-api</artifactId>
+                <version>${nifi-api.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.nifi</groupId>
+                <artifactId>nifi-utils</artifactId>
+                <version>${nifi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.nifi</groupId>
+                <artifactId>nifi-mock</artifactId>
+                <version>${nifi.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.github.busekaylan</groupId>
+                <artifactId>nifi-llm-api</artifactId>
+                <version>${project.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.github.busekaylan</groupId>
+                <artifactId>nifi-llm-api-nar</artifactId>
+                <version>${project.version}</version>
+                <type>nar</type>
+            </dependency>
+            <dependency>
+                <groupId>com.anthropic</groupId>
+                <artifactId>anthropic-java</artifactId>
+                <version>${anthropic-java.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.openai</groupId>
+                <artifactId>openai-java</artifactId>
+                <version>${openai-java.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.genai</groupId>
+                <artifactId>google-genai</artifactId>
+                <version>${google-genai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.16.0</version>
+                    <configuration>
+                        <release>${maven.compiler.release}</release>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.6.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.nifi</groupId>
+                    <artifactId>nifi-nar-maven-plugin</artifactId>
+                    <version>${nifi-nar-plugin.version}</version>
+                    <extensions>true</extensions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.nifi</groupId>
+                <artifactId>nifi-nar-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>

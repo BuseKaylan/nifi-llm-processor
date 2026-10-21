@@ -1,0 +1,23 @@
+NiFi LLM Processor
+Copyright 2026 Buse Kaylan
+
+This product is licensed under the Apache License, Version 2.0.
+
+This project is an independent, community-maintained extension. It is not
+affiliated with, endorsed by, or sponsored by Anthropic, OpenAI, Google or the
+Apache Software Foundation. "Claude" is a trademark of Anthropic PBC. "GPT" and
+"OpenAI" are trademarks of OpenAI. "Gemini" is a trademark of Google LLC.
+"Apache", "Apache NiFi" and "NiFi" are trademarks of the Apache Software
+Foundation.
+
+The binary NAR distributions bundle third-party libraries, including:
+  - Anthropic Java SDK (Apache License 2.0), in nifi-llm-anthropic-nar
+  - OpenAI Java SDK (Apache License 2.0), in nifi-llm-openai-nar
+  - Google Gen AI Java SDK (Apache License 2.0), in nifi-llm-gemini-nar
+  - Jackson, OkHttp, Okio, Kotlin, Guava, Apache HttpClient, Apache NiFi
+    utilities (Apache License 2.0)
+  - Protocol Buffers (BSD 3-Clause License)
+
+The SDKs pull in further permissively licensed libraries (gRPC, Gson,
+OpenTelemetry and others); each library's license is listed in its Maven
+metadata.

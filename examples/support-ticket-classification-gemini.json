@@ -1,0 +1,1039 @@
+{
+  "flowContents": {
+    "identifier": "1878ab07-057c-301c-aeac-5e965d93f0fc",
+    "instanceIdentifier": "5ff22758-01a1-1000-36b4-c10ef76571b8",
+    "name": "Support Ticket Classification (Gemini)",
+    "comments": "",
+    "position": {
+      "x": 1000.0,
+      "y": 0.0
+    },
+    "processGroups": [],
+    "remoteProcessGroups": [],
+    "processors": [
+      {
+        "identifier": "712452f8-b3ae-3846-95db-9d5bf3b99b0b",
+        "instanceIdentifier": "5ff22783-01a1-1000-6879-7d9d6e2ebb11",
+        "name": "Extract Category",
+        "comments": "",
+        "position": {
+          "x": 0.0,
+          "y": 690.0
+        },
+        "type": "org.apache.nifi.processors.standard.EvaluateJsonPath",
+        "bundle": {
+          "group": "org.apache.nifi",
+          "artifact": "nifi-standard-nar",
+          "version": "2.12.0"
+        },
+        "properties": {
+          "ticket.urgent": "$.urgent",
+          "Destination": "flowfile-attribute",
+          "Max String Length": "20 MB",
+          "Return Type": "scalar",
+          "Null Value Representation": "empty string",
+          "Path Not Found Behavior": "ignore",
+          "ticket.category": "$.category"
+        },
+        "propertyDescriptors": {
+          "ticket.urgent": {
+            "name": "ticket.urgent",
+            "displayName": "ticket.urgent",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": true
+          },
+          "Destination": {
+            "name": "Destination",
+            "displayName": "Destination",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "Max String Length": {
+            "name": "Max String Length",
+            "displayName": "Max String Length",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "Return Type": {
+            "name": "Return Type",
+            "displayName": "Return Type",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "Null Value Representation": {
+            "name": "Null Value Representation",
+            "displayName": "Null Value Representation",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "Path Not Found Behavior": {
+            "name": "Path Not Found Behavior",
+            "displayName": "Path Not Found Behavior",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "ticket.category": {
+            "name": "ticket.category",
+            "displayName": "ticket.category",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": true
+          }
+        },
+        "style": {},
+        "schedulingPeriod": "0 sec",
+        "schedulingStrategy": "TIMER_DRIVEN",
+        "executionNode": "ALL",
+        "penaltyDuration": "30 sec",
+        "yieldDuration": "1 sec",
+        "bulletinLevel": "WARN",
+        "runDurationMillis": 0,
+        "concurrentlySchedulableTaskCount": 1,
+        "autoTerminatedRelationships": [],
+        "scheduledState": "ENABLED",
+        "retryCount": 10,
+        "retriedRelationships": [],
+        "backoffMechanism": "PENALIZE_FLOWFILE",
+        "maxBackoffPeriod": "10 mins",
+        "componentType": "PROCESSOR",
+        "groupIdentifier": "1878ab07-057c-301c-aeac-5e965d93f0fc"
+      },
+      {
+        "identifier": "32c08239-e434-3797-8ce1-adfaf18620be",
+        "instanceIdentifier": "5ff22789-01a1-1000-92de-98fa8951e8a2",
+        "name": "Route by Category",
+        "comments": "",
+        "position": {
+          "x": 0.0,
+          "y": 920.0
+        },
+        "type": "org.apache.nifi.processors.standard.RouteOnAttribute",
+        "bundle": {
+          "group": "org.apache.nifi",
+          "artifact": "nifi-standard-nar",
+          "version": "2.12.0"
+        },
+        "properties": {
+          "Routing Strategy": "Route to Property name",
+          "technical": "${ticket.urgent:equals('false'):and(${ticket.category:equals('technical')})}",
+          "urgent": "${ticket.urgent:equals('true')}",
+          "billing": "${ticket.urgent:equals('false'):and(${ticket.category:equals('billing')})}"
+        },
+        "propertyDescriptors": {
+          "Routing Strategy": {
+            "name": "Routing Strategy",
+            "displayName": "Routing Strategy",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "technical": {
+            "name": "technical",
+            "displayName": "technical",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": true
+          },
+          "urgent": {
+            "name": "urgent",
+            "displayName": "urgent",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": true
+          },
+          "billing": {
+            "name": "billing",
+            "displayName": "billing",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": true
+          }
+        },
+        "style": {},
+        "schedulingPeriod": "0 sec",
+        "schedulingStrategy": "TIMER_DRIVEN",
+        "executionNode": "ALL",
+        "penaltyDuration": "30 sec",
+        "yieldDuration": "1 sec",
+        "bulletinLevel": "WARN",
+        "runDurationMillis": 25,
+        "concurrentlySchedulableTaskCount": 1,
+        "autoTerminatedRelationships": [],
+        "scheduledState": "ENABLED",
+        "retryCount": 10,
+        "retriedRelationships": [],
+        "backoffMechanism": "PENALIZE_FLOWFILE",
+        "maxBackoffPeriod": "10 mins",
+        "componentType": "PROCESSOR",
+        "groupIdentifier": "1878ab07-057c-301c-aeac-5e965d93f0fc"
+      },
+      {
+        "identifier": "157b3b5c-0576-3fbc-bf7c-b67d058ae204",
+        "instanceIdentifier": "5ff2277b-01a1-1000-3be7-53cce9fa9c72",
+        "name": "Classify Ticket with Gemini",
+        "comments": "",
+        "position": {
+          "x": 0.0,
+          "y": 460.0
+        },
+        "type": "io.github.busekaylan.nifi.llm.PromptLLM",
+        "bundle": {
+          "group": "io.github.busekaylan",
+          "artifact": "nifi-llm-processors-nar",
+          "version": "1.0.0"
+        },
+        "properties": {
+          "Output Destination": "flowfile-content",
+          "Output Attribute Name": "llm.response",
+          "LLM Client Service": "f30be0e7-7fb9-3c1e-9e2e-d2ecb62ca756",
+          "Max Content Size": "2 MB",
+          "Effort": "low",
+          "Max Tokens": "1024",
+          "Prompt": "Classify this support ticket. Mark it urgent when the customer is blocked, reports an outage, or asks for immediate help.",
+          "Output JSON Schema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"category\": {\n      \"type\": \"string\",\n      \"enum\": [\n        \"billing\",\n        \"technical\",\n        \"other\"\n      ]\n    },\n    \"urgent\": {\n      \"type\": \"boolean\"\n    }\n  },\n  \"required\": [\n    \"category\",\n    \"urgent\"\n  ],\n  \"additionalProperties\": false\n}",
+          "Include FlowFile Content": "true",
+          "Character Set": "UTF-8",
+          "System Prompt": "You are a customer support triage assistant."
+        },
+        "propertyDescriptors": {
+          "Output Destination": {
+            "name": "Output Destination",
+            "displayName": "Output Destination",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "Output Attribute Name": {
+            "name": "Output Attribute Name",
+            "displayName": "Output Attribute Name",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "LLM Client Service": {
+            "name": "LLM Client Service",
+            "displayName": "LLM Client Service",
+            "identifiesControllerService": true,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "Max Content Size": {
+            "name": "Max Content Size",
+            "displayName": "Max Content Size",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "Effort": {
+            "name": "Effort",
+            "displayName": "Effort",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "Max Tokens": {
+            "name": "Max Tokens",
+            "displayName": "Max Tokens",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "Prompt": {
+            "name": "Prompt",
+            "displayName": "Prompt",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "Output JSON Schema": {
+            "name": "Output JSON Schema",
+            "displayName": "Output JSON Schema",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "Include FlowFile Content": {
+            "name": "Include FlowFile Content",
+            "displayName": "Include FlowFile Content",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "Character Set": {
+            "name": "Character Set",
+            "displayName": "Character Set",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "System Prompt": {
+            "name": "System Prompt",
+            "displayName": "System Prompt",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          }
+        },
+        "style": {},
+        "schedulingPeriod": "0 sec",
+        "schedulingStrategy": "TIMER_DRIVEN",
+        "executionNode": "ALL",
+        "penaltyDuration": "30 sec",
+        "yieldDuration": "1 sec",
+        "bulletinLevel": "WARN",
+        "runDurationMillis": 0,
+        "concurrentlySchedulableTaskCount": 1,
+        "autoTerminatedRelationships": [],
+        "scheduledState": "ENABLED",
+        "retryCount": 10,
+        "retriedRelationships": [],
+        "backoffMechanism": "PENALIZE_FLOWFILE",
+        "maxBackoffPeriod": "10 mins",
+        "componentType": "PROCESSOR",
+        "groupIdentifier": "1878ab07-057c-301c-aeac-5e965d93f0fc"
+      },
+      {
+        "identifier": "a6850d1a-386d-3131-ac90-4aedb16bbad5",
+        "instanceIdentifier": "5ff22775-01a1-1000-465b-5e416351137f",
+        "name": "One Ticket per FlowFile",
+        "comments": "",
+        "position": {
+          "x": 0.0,
+          "y": 230.0
+        },
+        "type": "org.apache.nifi.processors.standard.SplitText",
+        "bundle": {
+          "group": "org.apache.nifi",
+          "artifact": "nifi-standard-nar",
+          "version": "2.12.0"
+        },
+        "properties": {
+          "Remove Trailing Newlines": "true",
+          "Maximum Fragment Size": null,
+          "Header Line Marker Characters": null,
+          "Header Line Count": "0",
+          "Line Split Count": "1"
+        },
+        "propertyDescriptors": {
+          "Remove Trailing Newlines": {
+            "name": "Remove Trailing Newlines",
+            "displayName": "Remove Trailing Newlines",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "Maximum Fragment Size": {
+            "name": "Maximum Fragment Size",
+            "displayName": "Maximum Fragment Size",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "Header Line Marker Characters": {
+            "name": "Header Line Marker Characters",
+            "displayName": "Header Line Marker Characters",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "Header Line Count": {
+            "name": "Header Line Count",
+            "displayName": "Header Line Count",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "Line Split Count": {
+            "name": "Line Split Count",
+            "displayName": "Line Split Count",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          }
+        },
+        "style": {},
+        "schedulingPeriod": "0 sec",
+        "schedulingStrategy": "TIMER_DRIVEN",
+        "executionNode": "ALL",
+        "penaltyDuration": "30 sec",
+        "yieldDuration": "1 sec",
+        "bulletinLevel": "WARN",
+        "runDurationMillis": 0,
+        "concurrentlySchedulableTaskCount": 1,
+        "autoTerminatedRelationships": [
+          "original",
+          "failure"
+        ],
+        "scheduledState": "ENABLED",
+        "retryCount": 10,
+        "retriedRelationships": [],
+        "backoffMechanism": "PENALIZE_FLOWFILE",
+        "maxBackoffPeriod": "10 mins",
+        "componentType": "PROCESSOR",
+        "groupIdentifier": "1878ab07-057c-301c-aeac-5e965d93f0fc"
+      },
+      {
+        "identifier": "b31b75c6-3574-3f55-bab6-cfbb6089a409",
+        "instanceIdentifier": "5ff2276e-01a1-1000-a126-93b43d33a6fa",
+        "name": "Sample Support Tickets",
+        "comments": "",
+        "position": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "type": "org.apache.nifi.processors.standard.GenerateFlowFile",
+        "bundle": {
+          "group": "org.apache.nifi",
+          "artifact": "nifi-standard-nar",
+          "version": "2.12.0"
+        },
+        "properties": {
+          "File Size": "0B",
+          "Batch Size": "1",
+          "Unique FlowFiles": "false",
+          "Mime Type": null,
+          "Custom Text": "I was charged twice for my subscription this month. Please refund ASAP!\nThe export button throws a 500 error since this morning. Our whole team is blocked.\nHow do I change the language on my invoices to German?\nThe dashboard loads slowly on Safari, but it works on Chrome.\nDo you have an office in Berlin? We would like to visit.\nOur production pipeline is down after the latest update. Need help immediately!\nCan I get a copy of last month's invoice as PDF?\nThe mobile app crashes when I open the settings page.\nDo you offer a discount for non-profit organizations?",
+          "Character Set": "UTF-8",
+          "Data Format": "Text"
+        },
+        "propertyDescriptors": {
+          "File Size": {
+            "name": "File Size",
+            "displayName": "File Size",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "Batch Size": {
+            "name": "Batch Size",
+            "displayName": "Batch Size",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "Unique FlowFiles": {
+            "name": "Unique FlowFiles",
+            "displayName": "Unique FlowFiles",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "Mime Type": {
+            "name": "Mime Type",
+            "displayName": "Mime Type",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "Custom Text": {
+            "name": "Custom Text",
+            "displayName": "Custom Text",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "Character Set": {
+            "name": "Character Set",
+            "displayName": "Character Set",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "Data Format": {
+            "name": "Data Format",
+            "displayName": "Data Format",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          }
+        },
+        "style": {},
+        "schedulingPeriod": "1 day",
+        "schedulingStrategy": "TIMER_DRIVEN",
+        "executionNode": "ALL",
+        "penaltyDuration": "30 sec",
+        "yieldDuration": "1 sec",
+        "bulletinLevel": "WARN",
+        "runDurationMillis": 0,
+        "concurrentlySchedulableTaskCount": 1,
+        "autoTerminatedRelationships": [],
+        "scheduledState": "ENABLED",
+        "retryCount": 10,
+        "retriedRelationships": [],
+        "backoffMechanism": "PENALIZE_FLOWFILE",
+        "maxBackoffPeriod": "10 mins",
+        "componentType": "PROCESSOR",
+        "groupIdentifier": "1878ab07-057c-301c-aeac-5e965d93f0fc"
+      }
+    ],
+    "inputPorts": [],
+    "outputPorts": [],
+    "connections": [
+      {
+        "identifier": "ae6d9951-2722-3f58-a6c6-cfd5129f3fd8",
+        "instanceIdentifier": "5ff227c3-01a1-1000-5b13-ffb63bd57171",
+        "name": "",
+        "source": {
+          "id": "712452f8-b3ae-3846-95db-9d5bf3b99b0b",
+          "type": "PROCESSOR",
+          "groupId": "1878ab07-057c-301c-aeac-5e965d93f0fc",
+          "name": "Extract Category",
+          "comments": "",
+          "instanceIdentifier": "5ff22783-01a1-1000-6879-7d9d6e2ebb11"
+        },
+        "destination": {
+          "id": "fb9a9c36-8895-333c-9a1d-c4a0e0f65825",
+          "type": "FUNNEL",
+          "groupId": "1878ab07-057c-301c-aeac-5e965d93f0fc",
+          "name": "Funnel",
+          "comments": "",
+          "instanceIdentifier": "5ff227a5-01a1-1000-79d7-2860c3d7b02b"
+        },
+        "labelIndex": 1,
+        "zIndex": 0,
+        "selectedRelationships": [
+          "failure",
+          "unmatched"
+        ],
+        "backPressureObjectThreshold": 10000,
+        "backPressureDataSizeThreshold": "1 GB",
+        "flowFileExpiration": "0 sec",
+        "prioritizers": [],
+        "bends": [
+          {
+            "x": 660.0,
+            "y": 750.0
+          }
+        ],
+        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
+        "loadBalanceCompression": "DO_NOT_COMPRESS",
+        "componentType": "CONNECTION",
+        "groupIdentifier": "1878ab07-057c-301c-aeac-5e965d93f0fc"
+      },
+      {
+        "identifier": "cd904c09-19b3-3fdf-9d54-0fb563d4f451",
+        "instanceIdentifier": "5ff227d7-01a1-1000-b065-f3a95bb99b18",
+        "name": "",
+        "source": {
+          "id": "32c08239-e434-3797-8ce1-adfaf18620be",
+          "type": "PROCESSOR",
+          "groupId": "1878ab07-057c-301c-aeac-5e965d93f0fc",
+          "name": "Route by Category",
+          "comments": "",
+          "instanceIdentifier": "5ff22789-01a1-1000-92de-98fa8951e8a2"
+        },
+        "destination": {
+          "id": "76520669-b76f-310e-9dcd-300512be8441",
+          "type": "FUNNEL",
+          "groupId": "1878ab07-057c-301c-aeac-5e965d93f0fc",
+          "name": "Funnel",
+          "comments": "",
+          "instanceIdentifier": "5ff227a0-01a1-1000-6d7f-7dcd565422cc"
+        },
+        "labelIndex": 1,
+        "zIndex": 0,
+        "selectedRelationships": [
+          "unmatched"
+        ],
+        "backPressureObjectThreshold": 10000,
+        "backPressureDataSizeThreshold": "1 GB",
+        "flowFileExpiration": "0 sec",
+        "prioritizers": [],
+        "bends": [
+          {
+            "x": 800.0,
+            "y": 1180.0
+          }
+        ],
+        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
+        "loadBalanceCompression": "DO_NOT_COMPRESS",
+        "componentType": "CONNECTION",
+        "groupIdentifier": "1878ab07-057c-301c-aeac-5e965d93f0fc"
+      },
+      {
+        "identifier": "4c7bd2f9-d26d-3f12-a11e-f365a72dd151",
+        "instanceIdentifier": "5ff227ae-01a1-1000-7d71-c8526c2242f0",
+        "name": "",
+        "source": {
+          "id": "a6850d1a-386d-3131-ac90-4aedb16bbad5",
+          "type": "PROCESSOR",
+          "groupId": "1878ab07-057c-301c-aeac-5e965d93f0fc",
+          "name": "One Ticket per FlowFile",
+          "comments": "",
+          "instanceIdentifier": "5ff22775-01a1-1000-465b-5e416351137f"
+        },
+        "destination": {
+          "id": "157b3b5c-0576-3fbc-bf7c-b67d058ae204",
+          "type": "PROCESSOR",
+          "groupId": "1878ab07-057c-301c-aeac-5e965d93f0fc",
+          "name": "Classify Ticket with Gemini",
+          "comments": "",
+          "instanceIdentifier": "5ff2277b-01a1-1000-3be7-53cce9fa9c72"
+        },
+        "labelIndex": 1,
+        "zIndex": 0,
+        "selectedRelationships": [
+          "splits"
+        ],
+        "backPressureObjectThreshold": 10000,
+        "backPressureDataSizeThreshold": "1 GB",
+        "flowFileExpiration": "0 sec",
+        "prioritizers": [],
+        "bends": [],
+        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
+        "loadBalanceCompression": "DO_NOT_COMPRESS",
+        "componentType": "CONNECTION",
+        "groupIdentifier": "1878ab07-057c-301c-aeac-5e965d93f0fc"
+      },
+      {
+        "identifier": "de93c179-d56a-3b94-a0c2-9c8239a9330d",
+        "instanceIdentifier": "5ff227aa-01a1-1000-97ec-6375729197c9",
+        "name": "",
+        "source": {
+          "id": "b31b75c6-3574-3f55-bab6-cfbb6089a409",
+          "type": "PROCESSOR",
+          "groupId": "1878ab07-057c-301c-aeac-5e965d93f0fc",
+          "name": "Sample Support Tickets",
+          "comments": "",
+          "instanceIdentifier": "5ff2276e-01a1-1000-a126-93b43d33a6fa"
+        },
+        "destination": {
+          "id": "a6850d1a-386d-3131-ac90-4aedb16bbad5",
+          "type": "PROCESSOR",
+          "groupId": "1878ab07-057c-301c-aeac-5e965d93f0fc",
+          "name": "One Ticket per FlowFile",
+          "comments": "",
+          "instanceIdentifier": "5ff22775-01a1-1000-465b-5e416351137f"
+        },
+        "labelIndex": 1,
+        "zIndex": 0,
+        "selectedRelationships": [
+          "success"
+        ],
+        "backPressureObjectThreshold": 10000,
+        "backPressureDataSizeThreshold": "1 GB",
+        "flowFileExpiration": "0 sec",
+        "prioritizers": [],
+        "bends": [],
+        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
+        "loadBalanceCompression": "DO_NOT_COMPRESS",
+        "componentType": "CONNECTION",
+        "groupIdentifier": "1878ab07-057c-301c-aeac-5e965d93f0fc"
+      },
+      {
+        "identifier": "b70e04cc-4939-3fd9-9162-fb64cc9eefba",
+        "instanceIdentifier": "5ff227b8-01a1-1000-143d-b87806fe1a0e",
+        "name": "Needs review",
+        "source": {
+          "id": "157b3b5c-0576-3fbc-bf7c-b67d058ae204",
+          "type": "PROCESSOR",
+          "groupId": "1878ab07-057c-301c-aeac-5e965d93f0fc",
+          "name": "Classify Ticket with Gemini",
+          "comments": "",
+          "instanceIdentifier": "5ff2277b-01a1-1000-3be7-53cce9fa9c72"
+        },
+        "destination": {
+          "id": "fb9a9c36-8895-333c-9a1d-c4a0e0f65825",
+          "type": "FUNNEL",
+          "groupId": "1878ab07-057c-301c-aeac-5e965d93f0fc",
+          "name": "Funnel",
+          "comments": "",
+          "instanceIdentifier": "5ff227a5-01a1-1000-79d7-2860c3d7b02b"
+        },
+        "labelIndex": 1,
+        "zIndex": 0,
+        "selectedRelationships": [
+          "refused",
+          "failure"
+        ],
+        "backPressureObjectThreshold": 10000,
+        "backPressureDataSizeThreshold": "1 GB",
+        "flowFileExpiration": "0 sec",
+        "prioritizers": [],
+        "bends": [],
+        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
+        "loadBalanceCompression": "DO_NOT_COMPRESS",
+        "componentType": "CONNECTION",
+        "groupIdentifier": "1878ab07-057c-301c-aeac-5e965d93f0fc"
+      },
+      {
+        "identifier": "9df2b2a2-c813-3c14-823c-1692c9b0ef69",
+        "instanceIdentifier": "5ff227d2-01a1-1000-ccfc-b24af3df2dee",
+        "name": "",
+        "source": {
+          "id": "32c08239-e434-3797-8ce1-adfaf18620be",
+          "type": "PROCESSOR",
+          "groupId": "1878ab07-057c-301c-aeac-5e965d93f0fc",
+          "name": "Route by Category",
+          "comments": "",
+          "instanceIdentifier": "5ff22789-01a1-1000-92de-98fa8951e8a2"
+        },
+        "destination": {
+          "id": "af1a1eab-1e3e-3ce2-a80e-bd77df99bab0",
+          "type": "FUNNEL",
+          "groupId": "1878ab07-057c-301c-aeac-5e965d93f0fc",
+          "name": "Funnel",
+          "comments": "",
+          "instanceIdentifier": "5ff2279b-01a1-1000-a194-43ebcb4ed6c6"
+        },
+        "labelIndex": 1,
+        "zIndex": 0,
+        "selectedRelationships": [
+          "technical"
+        ],
+        "backPressureObjectThreshold": 10000,
+        "backPressureDataSizeThreshold": "1 GB",
+        "flowFileExpiration": "0 sec",
+        "prioritizers": [],
+        "bends": [
+          {
+            "x": 400.0,
+            "y": 1180.0
+          }
+        ],
+        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
+        "loadBalanceCompression": "DO_NOT_COMPRESS",
+        "componentType": "CONNECTION",
+        "groupIdentifier": "1878ab07-057c-301c-aeac-5e965d93f0fc"
+      },
+      {
+        "identifier": "f350cce6-126c-33e6-bb3e-282de6f895a5",
+        "instanceIdentifier": "5ff227be-01a1-1000-f75d-7339a46dd063",
+        "name": "",
+        "source": {
+          "id": "712452f8-b3ae-3846-95db-9d5bf3b99b0b",
+          "type": "PROCESSOR",
+          "groupId": "1878ab07-057c-301c-aeac-5e965d93f0fc",
+          "name": "Extract Category",
+          "comments": "",
+          "instanceIdentifier": "5ff22783-01a1-1000-6879-7d9d6e2ebb11"
+        },
+        "destination": {
+          "id": "32c08239-e434-3797-8ce1-adfaf18620be",
+          "type": "PROCESSOR",
+          "groupId": "1878ab07-057c-301c-aeac-5e965d93f0fc",
+          "name": "Route by Category",
+          "comments": "",
+          "instanceIdentifier": "5ff22789-01a1-1000-92de-98fa8951e8a2"
+        },
+        "labelIndex": 1,
+        "zIndex": 0,
+        "selectedRelationships": [
+          "matched"
+        ],
+        "backPressureObjectThreshold": 10000,
+        "backPressureDataSizeThreshold": "1 GB",
+        "flowFileExpiration": "0 sec",
+        "prioritizers": [],
+        "bends": [],
+        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
+        "loadBalanceCompression": "DO_NOT_COMPRESS",
+        "componentType": "CONNECTION",
+        "groupIdentifier": "1878ab07-057c-301c-aeac-5e965d93f0fc"
+      },
+      {
+        "identifier": "f3735b10-f9bc-3b9c-840e-061efc74432c",
+        "instanceIdentifier": "5ff227b3-01a1-1000-a063-4ca54aa8b003",
+        "name": "",
+        "source": {
+          "id": "157b3b5c-0576-3fbc-bf7c-b67d058ae204",
+          "type": "PROCESSOR",
+          "groupId": "1878ab07-057c-301c-aeac-5e965d93f0fc",
+          "name": "Classify Ticket with Gemini",
+          "comments": "",
+          "instanceIdentifier": "5ff2277b-01a1-1000-3be7-53cce9fa9c72"
+        },
+        "destination": {
+          "id": "712452f8-b3ae-3846-95db-9d5bf3b99b0b",
+          "type": "PROCESSOR",
+          "groupId": "1878ab07-057c-301c-aeac-5e965d93f0fc",
+          "name": "Extract Category",
+          "comments": "",
+          "instanceIdentifier": "5ff22783-01a1-1000-6879-7d9d6e2ebb11"
+        },
+        "labelIndex": 1,
+        "zIndex": 0,
+        "selectedRelationships": [
+          "success"
+        ],
+        "backPressureObjectThreshold": 10000,
+        "backPressureDataSizeThreshold": "1 GB",
+        "flowFileExpiration": "0 sec",
+        "prioritizers": [],
+        "bends": [],
+        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
+        "loadBalanceCompression": "DO_NOT_COMPRESS",
+        "componentType": "CONNECTION",
+        "groupIdentifier": "1878ab07-057c-301c-aeac-5e965d93f0fc"
+      },
+      {
+        "identifier": "ecaae6ff-ed94-3aee-8d5d-c90612ce946a",
+        "instanceIdentifier": "5ff227cd-01a1-1000-e487-160e178b6ace",
+        "name": "",
+        "source": {
+          "id": "32c08239-e434-3797-8ce1-adfaf18620be",
+          "type": "PROCESSOR",
+          "groupId": "1878ab07-057c-301c-aeac-5e965d93f0fc",
+          "name": "Route by Category",
+          "comments": "",
+          "instanceIdentifier": "5ff22789-01a1-1000-92de-98fa8951e8a2"
+        },
+        "destination": {
+          "id": "1ae01ecb-b78f-3045-840a-f8f2d496abcb",
+          "type": "FUNNEL",
+          "groupId": "1878ab07-057c-301c-aeac-5e965d93f0fc",
+          "name": "Funnel",
+          "comments": "",
+          "instanceIdentifier": "5ff22797-01a1-1000-2598-cbbc611dce00"
+        },
+        "labelIndex": 1,
+        "zIndex": 0,
+        "selectedRelationships": [
+          "billing"
+        ],
+        "backPressureObjectThreshold": 10000,
+        "backPressureDataSizeThreshold": "1 GB",
+        "flowFileExpiration": "0 sec",
+        "prioritizers": [],
+        "bends": [
+          {
+            "x": 0.0,
+            "y": 1180.0
+          }
+        ],
+        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
+        "loadBalanceCompression": "DO_NOT_COMPRESS",
+        "componentType": "CONNECTION",
+        "groupIdentifier": "1878ab07-057c-301c-aeac-5e965d93f0fc"
+      },
+      {
+        "identifier": "d152b69b-1c9f-34f6-881b-4b5ac7c6db28",
+        "instanceIdentifier": "5ff227c8-01a1-1000-3320-748b3c425ca4",
+        "name": "",
+        "source": {
+          "id": "32c08239-e434-3797-8ce1-adfaf18620be",
+          "type": "PROCESSOR",
+          "groupId": "1878ab07-057c-301c-aeac-5e965d93f0fc",
+          "name": "Route by Category",
+          "comments": "",
+          "instanceIdentifier": "5ff22789-01a1-1000-92de-98fa8951e8a2"
+        },
+        "destination": {
+          "id": "ccd9f9b9-821a-37cc-b1d7-4296944548f8",
+          "type": "FUNNEL",
+          "groupId": "1878ab07-057c-301c-aeac-5e965d93f0fc",
+          "name": "Funnel",
+          "comments": "",
+          "instanceIdentifier": "5ff22791-01a1-1000-534e-c6d865d5da32"
+        },
+        "labelIndex": 1,
+        "zIndex": 0,
+        "selectedRelationships": [
+          "urgent"
+        ],
+        "backPressureObjectThreshold": 10000,
+        "backPressureDataSizeThreshold": "1 GB",
+        "flowFileExpiration": "0 sec",
+        "prioritizers": [],
+        "bends": [
+          {
+            "x": -400.0,
+            "y": 1180.0
+          }
+        ],
+        "loadBalanceStrategy": "DO_NOT_LOAD_BALANCE",
+        "loadBalanceCompression": "DO_NOT_COMPRESS",
+        "componentType": "CONNECTION",
+        "groupIdentifier": "1878ab07-057c-301c-aeac-5e965d93f0fc"
+      }
+    ],
+    "labels": [
+      {
+        "identifier": "3906569c-bd7e-381c-a1a3-18eaf5b6fc1a",
+        "instanceIdentifier": "5ff227dc-01a1-1000-a0cd-e60e3c1a69d8",
+        "position": {
+          "x": 460.0,
+          "y": 0.0
+        },
+        "label": "Support ticket triage with Gemini\n\n1. Open the 'LLM Example (Gemini)' parameter context and set llm.api.key\n2. Enable the controller service and start this process group\n3. Inspect the queues: each ticket gets ticket.category and ticket.urgent attributes",
+        "zIndex": 0,
+        "width": 560.0,
+        "height": 150.0,
+        "style": {
+          "background-color": "#fff7d7",
+          "font-size": "15px"
+        },
+        "componentType": "LABEL",
+        "groupIdentifier": "1878ab07-057c-301c-aeac-5e965d93f0fc"
+      }
+    ],
+    "funnels": [
+      {
+        "identifier": "1ae01ecb-b78f-3045-840a-f8f2d496abcb",
+        "instanceIdentifier": "5ff22797-01a1-1000-2598-cbbc611dce00",
+        "position": {
+          "x": -24.0,
+          "y": 1320.0
+        },
+        "componentType": "FUNNEL",
+        "groupIdentifier": "1878ab07-057c-301c-aeac-5e965d93f0fc"
+      },
+      {
+        "identifier": "76520669-b76f-310e-9dcd-300512be8441",
+        "instanceIdentifier": "5ff227a0-01a1-1000-6d7f-7dcd565422cc",
+        "position": {
+          "x": 776.0,
+          "y": 1320.0
+        },
+        "componentType": "FUNNEL",
+        "groupIdentifier": "1878ab07-057c-301c-aeac-5e965d93f0fc"
+      },
+      {
+        "identifier": "ccd9f9b9-821a-37cc-b1d7-4296944548f8",
+        "instanceIdentifier": "5ff22791-01a1-1000-534e-c6d865d5da32",
+        "position": {
+          "x": -424.0,
+          "y": 1320.0
+        },
+        "componentType": "FUNNEL",
+        "groupIdentifier": "1878ab07-057c-301c-aeac-5e965d93f0fc"
+      },
+      {
+        "identifier": "af1a1eab-1e3e-3ce2-a80e-bd77df99bab0",
+        "instanceIdentifier": "5ff2279b-01a1-1000-a194-43ebcb4ed6c6",
+        "position": {
+          "x": 376.0,
+          "y": 1320.0
+        },
+        "componentType": "FUNNEL",
+        "groupIdentifier": "1878ab07-057c-301c-aeac-5e965d93f0fc"
+      },
+      {
+        "identifier": "fb9a9c36-8895-333c-9a1d-c4a0e0f65825",
+        "instanceIdentifier": "5ff227a5-01a1-1000-79d7-2860c3d7b02b",
+        "position": {
+          "x": 620.0,
+          "y": 600.0
+        },
+        "componentType": "FUNNEL",
+        "groupIdentifier": "1878ab07-057c-301c-aeac-5e965d93f0fc"
+      }
+    ],
+    "controllerServices": [
+      {
+        "identifier": "f30be0e7-7fb9-3c1e-9e2e-d2ecb62ca756",
+        "instanceIdentifier": "5ff2275d-01a1-1000-e82d-26c0b58491f0",
+        "name": "Gemini Client",
+        "comments": "",
+        "type": "io.github.busekaylan.nifi.llm.GeminiLlmClientService",
+        "bundle": {
+          "group": "io.github.busekaylan",
+          "artifact": "nifi-llm-gemini-nar",
+          "version": "1.0.0"
+        },
+        "properties": {
+          "API Key": "#{llm.api.key}",
+          "Base URL": null,
+          "Request Timeout": "5 min",
+          "Model": "#{llm.model}",
+          "Max Retries": "2"
+        },
+        "propertyDescriptors": {
+          "API Key": {
+            "name": "API Key",
+            "displayName": "API Key",
+            "identifiesControllerService": false,
+            "sensitive": true,
+            "dynamic": false
+          },
+          "Base URL": {
+            "name": "Base URL",
+            "displayName": "Base URL",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "Request Timeout": {
+            "name": "Request Timeout",
+            "displayName": "Request Timeout",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "Model": {
+            "name": "Model",
+            "displayName": "Model",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          },
+          "Max Retries": {
+            "name": "Max Retries",
+            "displayName": "Max Retries",
+            "identifiesControllerService": false,
+            "sensitive": false,
+            "dynamic": false
+          }
+        },
+        "controllerServiceApis": [
+          {
+            "type": "io.github.busekaylan.nifi.llm.LlmClientService",
+            "bundle": {
+              "group": "io.github.busekaylan",
+              "artifact": "nifi-llm-api-nar",
+              "version": "1.0.0"
+            }
+          }
+        ],
+        "scheduledState": "DISABLED",
+        "bulletinLevel": "WARN",
+        "componentType": "CONTROLLER_SERVICE",
+        "groupIdentifier": "1878ab07-057c-301c-aeac-5e965d93f0fc"
+      }
+    ],
+    "parameterContextName": "LLM Example (Gemini)",
+    "defaultFlowFileExpiration": "0 sec",
+    "defaultBackPressureObjectThreshold": 10000,
+    "defaultBackPressureDataSizeThreshold": "1 GB",
+    "scheduledState": "ENABLED",
+    "executionEngine": "INHERITED",
+    "maxConcurrentTasks": 1,
+    "statelessFlowTimeout": "1 min",
+    "flowFileConcurrency": "UNBOUNDED",
+    "flowFileOutboundPolicy": "STREAM_WHEN_AVAILABLE",
+    "componentType": "PROCESS_GROUP"
+  },
+  "externalControllerServices": {},
+  "parameterContexts": {
+    "LLM Example (Gemini)": {
+      "name": "LLM Example (Gemini)",
+      "parameters": [
+        {
+          "name": "llm.api.key",
+          "description": "Your Gemini API key",
+          "sensitive": true,
+          "provided": false
+        },
+        {
+          "name": "llm.model",
+          "description": "Model id",
+          "sensitive": false,
+          "provided": false,
+          "value": "gemini-flash-latest"
+        }
+      ],
+      "inheritedParameterContexts": [],
+      "description": "Set llm.api.key before starting the flow.",
+      "componentType": "PARAMETER_CONTEXT"
+    }
+  },
+  "flowEncodingVersion": "1.0",
+  "parameterProviders": {},
+  "latest": false
+}
